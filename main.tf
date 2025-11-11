@@ -11,4 +11,7 @@ resource "aws_instance" "CICD-server" {
     }
 }
 
+output "public_ip" {
+   value = aws_instance.CICD-server.public_ip
+}
 
