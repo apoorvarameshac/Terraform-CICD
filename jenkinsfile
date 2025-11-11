@@ -31,5 +31,16 @@ pipeline {
                 
             }
         }
+        stage('Destroy'){
+            when {
+                expression {
+                    return param.DESTROY==true
+                }
+            }
+            steps {
+                input message: "Do you want to destory all resources"
+                sh 'terraform destroy -auto-approve'
+            }
+        }
     }
 }
