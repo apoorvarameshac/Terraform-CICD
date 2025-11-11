@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    
+    environment {
+        AWS_DEFAULT_REGION = "ap-south-1"
+        AWS_CREDENTIALS = credentials('aws_cred')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/apoorvarameshac/Terraform-CICD.git'
+            
+            }
+        }
+        stage('initialize'){
+            steps {
+                sh 'terraform init'
+            }
+        }
+        stage('Plan'){
+            steps {
+                sh 'terraform plan -out=tfplan' 
+                
+            }
+        }
+        stage('Apply') {
+            steps {
+                input message: 'Do you want to apply these changes' 
+                sh 'terraform apply -auto-approve' 
+                
+            }
+        }
+    }
+}
